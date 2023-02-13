@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface QuoteRepository extends JpaRepository<Quote, Long> {
 
-    @Query(value = "select q.* from v_top_worst_quotes q", nativeQuery = true)
+    @Query(value = "select * from v_top_worst_quotes q", nativeQuery = true)
     List<Quote> findWorstTen();
 }

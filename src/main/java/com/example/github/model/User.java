@@ -1,5 +1,6 @@
 package com.example.github.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.sql.Date;
@@ -17,9 +18,11 @@ public class User {
     private String name;
 
     @Column
+    @JsonIgnore
     private String email;
 
     @Column
+    @JsonIgnore
     private String password;
 
     @Column

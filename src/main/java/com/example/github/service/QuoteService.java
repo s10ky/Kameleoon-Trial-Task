@@ -27,8 +27,10 @@ public class QuoteService {
     }
 
     public Quote createQuote(Quote quote) {
-        if (!userRepository.existsById(quote.getUser().getUserId()))
+        Optional<User> optionalUser = userRepository.findById(quote.getUser().getUserId());
+        if (optionalUser.isEmpty())
             throw new ResourseNotFoundException("User not exists");
+        quote.setUser(optionalUser.get());
         return quoteRepository.save(quote);
     }
 
@@ -49,13 +51,10 @@ public class QuoteService {
     }
 
     public List<Quote> getTopQuotes(int cnt) {
-        return quoteRepository.findAll().stream().sorted((q2, q1) -> {
-            var r1 = q1.getVotes().stream().map(Vote::getVal).reduce(Integer::sum);
-            var r2 = q2.getVotes().stream().map(Vote::getVal).reduce(Integer::sum);
-            if (r1.isPresent() && r2.isPresent()) return Integer.compare(r1.get(), r2.get());
-            if (r1.isEmpty() && r2.isEmpty()) return 0;
-            if (r1.isPresent()) return 1;
-            return -1;
+        return quoteRepository.findAll().stream().sorted((q1, q2) -> {
+            var r1 = q1.getVotes().stream().map(Vote::getVal).reduce(Integer::sum).orElse(0);
+            var r2 = q2.getVotes().stream().map(Vote::getVal).reduce(Integer::sum).orElse(0);
+            return Integer.compare(r2, r1);
         }).limit(cnt).toList();
     }
 

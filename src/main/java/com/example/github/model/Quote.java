@@ -1,8 +1,9 @@
 package com.example.github.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
+
 import java.sql.Date;
 import java.util.List;
 
@@ -22,9 +23,9 @@ public class Quote {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private User user;
 
     @OneToMany(mappedBy = "pk.quote")
-    @JsonIgnore
     private List<Vote> votes;
 }

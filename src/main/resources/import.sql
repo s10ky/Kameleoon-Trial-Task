@@ -1,4 +1,4 @@
-create view v_top_worst_quotes as  select t.* from (select q.quote_id, q.content, q.create_date, q.user_id, ifnull(sum(v.val), 0) as rating from quotes q left join votes v on q.quote_id = v.quote_id group by q.quote_id, q.content, q.create_date, q.user_id) t order by rating desc limit 10;
+create view v_top_worst_quotes as  select t.* from (select q.quote_id, q.content, q.create_date, q.user_id, ifnull(sum(v.val), 0) as rating from quotes q left join votes v on q.quote_id = v.quote_id group by q.quote_id, q.content, q.create_date, q.user_id) t order by rating limit 10;
 
 insert into users(name, email, password, create_date) values ('First', 'one@ema.il', '1Pass', date'2020-02-22');
 insert into users(name, email, password, create_date) values ('Second', 'two@ema.il', '1Pass', date'2022-03-24');
